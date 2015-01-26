@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package>
+  
+  <name>hratc2015_dataset</name>
+  <version>0.0.0</version>
+  <description>The hratc2015_dataset package.</description>
+
+  <maintainer email="goncabrita@gmail.com">Gonçalo Cabrita</maintainer>
+  <maintainer email="reneuland@gmail.com">Renata das Chagas Neuland</maintainer>
+  <maintainer email="rqmaffei@gmail.com">Renan de Queiros Maffei</maintainer>
+  <maintainer email="vitor_mj@yahoo.com">Vitor Augusto Machado Jorge</maintainer>
+  <maintainer email="guilhermefrancosi@gmail.com">Guilherme Schvarcz Franco</maintainer>
+
+  <license>BSD</license>
+  <url type="website">http://www.isr.uc.pt/~embedded/events/HRATC2015</url>
+  <author email="goncabrita@gmail.com">Gonçalo Cabrita</author>
+  <author email="reneuland@gmail.com">Renata das Chagas Neuland</author>
+  <author email="rqmaffei@gmail.com">Renan de Queiros Maffei</author>
+  <author email="vitor_mj@yahoo.com">Vitor Augusto Machado Jorge</author>
+  <author email="guilhermefrancosi@gmail.com">Guilherme Schvarcz Franco</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>message_filters</build_depend>
+  <build_depend>metal_detector_msgs</build_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>tf</run_depend>
+  <run_depend>message_filters</run_depend>
+  <run_depend>rmetal_detector_msgs</run_depend>
+  
+</package>
