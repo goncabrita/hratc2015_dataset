@@ -208,7 +208,7 @@ Husky A200 file and modified by the ISR University of Coimbra
     <front_cover parent="base_footprint" x="0" y="0" z="${base_z_size}" rx="0" ry="0" rz="0" />
 
     <!-- MTi macro -->
-    <mti parent="husky_bridge" x="-0.10" y="0.17" z="-0.15" rx="1.57" ry="0" rz="0" />
+    <mti parent="top_cover" x="0.2295" y="0.0" z="0.157" rx="0" ry="0" rz="0" />
 
     <!-- CAMERA macros -->
     <pointgrey_flea3 prefix="right" parent="husky_bridge" base_offset="-0.145" camera_offset="-0.00" camera_r="0" camera_p="0" camera_y="0" />

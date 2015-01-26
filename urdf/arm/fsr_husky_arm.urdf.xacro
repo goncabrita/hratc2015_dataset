@@ -328,7 +328,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     name="metal_detector_antenna_joint"
     type="fixed">
     <origin
-      xyz="-0.1350 -0.075 0.3"
+      xyz="-0.06 -0.0458 0.29"
       rpy="0 0.325 -1.15079633" /> -->
     <parent
       link="metal_detector_arm" />

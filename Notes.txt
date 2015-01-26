@@ -1,0 +1,5 @@
+Moving the laser tilt
+$ rostopic pub /tilt_controller/command std_msgs/Float64 0.0
+
+Moving the arm
+$ rostopic pub /arm_controller/command trajectory_msgs/JointTrajectory "{joint_names: [upper_arm_joint, arm_axel_joint], points: [{positions: [0.0, 0.0], velocities: [0.1, 0.1], accelerations: [0.1, 0.1], time_from_start: {secs: 1, nsecs: 0}}]}"
