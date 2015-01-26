@@ -67,6 +67,11 @@ public:
         tf_filter_->registerCallback( boost::bind(&MetalDetector::msgCallback, this, _1) );
     }
 
+    ~MetalDetector()
+    {
+        fclose(file_);
+    }
+
 private:
     message_filters::Subscriber<metal_detector_msgs::Coil> md_sub_;
     tf::TransformListener tf_;
@@ -92,16 +97,6 @@ private:
         try
         {
             tf_.transformPoint(target_frame_, point_in, point_out);
-
-            // Note that z is the position of the coil, not the position of the possible metal sample!
-            /*ROS_INFO("Coil %s with data ch0 %d ch1 %d ch2 %d at x %f y %f z %f",
-                coil_ptr->header.frame_id.c_str(),
-                coil_ptr->channel[0],
-                coil_ptr->channel[1],
-                coil_ptr->channel[2],
-                point_out.point.x,
-                point_out.point.y,
-                point_out.point.z);*/
 
              fprintf(file_, "%d,%d,%d,%f,%f,%f\n",
                      coil_ptr->channel[0],
