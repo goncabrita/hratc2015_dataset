@@ -8,6 +8,4 @@
         <rosparam param="source_list">["/arm_controller/joint_states","/joint_states"]</rosparam>
     </node>
 
-    <node pkg="rosbag" type="play" name="player" output="screen" args="--clock /home/coolfarm/coolfarm_workspace/src/hratc2015_dataset/bagfiles/output.bag"/>
-
 </launch>

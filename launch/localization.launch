@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- Extended Kalman Filter -  Estimate the 3D pose of the robot -->
+	<node name="gps_conv" pkg="gps_common" type="utm_odometry_node">
+		<remap from="odom" to="gps/odom"/>
+ 		<remap from="fix" to="gps/fix" />
+ 		<param name="rot_covariance" value="99999" />
+ 		<param name="use_gps_height" value="false" />    
+	</node>
+
+	<node name="odo_covariance_correction" pkg="odo_covariance" type="odo_covariance"/>
+
+	<node name="imu_offset" pkg="imu_offset" type="imu_yaw_offset">
+  		<param name="yaw_offset" value="1.57079633" />    
+	</node>
+
+	<node pkg="robot_pose_ekf_cp" type="robot_pose_ekf_cp" name="robot_pose_ekf_cp" output="screen">
+		<remap from="odom" to="encoder_corrected"/>
+		<remap from="imu_data" to="imu/data_corrected"/>
+		<remap from="gps" to="gps/odom"/>
+		<param name="output_frame" value="odom"/>
+		<param name="freq" value="30.0"/>
+		<param name="sensor_timeout" value="1.0"/>
+		<param name="odom_used" value="true"/>
+		<param name="imu_used" value="true"/>
+		<param name="imu_absolute" value="true"/>
+		<param name="vo_used" value="false"/>
+		<param name="gps_used" value="true"/>
+		<param name="debug" value="false"/>
+    		<param name="self_diagnose" value="false"/>
+	</node>
+
+	<node pkg="robot_pose_ekf_cp" type="robot_pose_ekf_cp" name="robot_pose_ekf_cp_nogps" output="screen">
+		<remap from="odom" to="encoder_corrected"/>
+		<!--	<remap from="odom" to="encoder"/> -->
+		<remap from="imu_data" to="imu/data_corrected"/>
+		<remap from="gps" to="gps/odom"/>
+		<param name="output_frame" value="odom"/>
+		<param name="freq" value="30.0"/>
+		<param name="sensor_timeout" value="1.0"/>
+		<param name="odom_used" value="true"/>
+		<param name="imu_used" value="true"/>
+		<param name="imu_absolute" value="true"/>
+		<param name="vo_used" value="false"/>
+		<param name="gps_used" value="false"/>
+		<param name="debug" value="false"/>
+    		<param name="self_diagnose" value="false"/>
+	</node>
+
+</launch>

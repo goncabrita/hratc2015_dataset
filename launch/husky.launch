@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<launch>
+  
+	<!-- Clearpath Husky Robot -->
+ 	<include file="$(find husky_base)/launch/base2.launch" /> 
+ 
+ 	<!-- XSens MTi-300 IMU -->
+ 	<node name="xsens_mti_300" pkg="xsens_driver" type="mtnode.py" output="screen" >
+   		<param name="device" value="/dev/mti_300" />
+   		<param name="baudrate" value="115200" />
+   		<param name="frame_id" value="base_imu" />
+ 	</node>
+
+	<!-- Localization -->
+	<include file="$(find hratc2015_dataset)/launch/localization.launch" />
+
+ 	<!-- Laser and Tilt -->
+	<node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" output="screen">
+        	<rosparam>
+            		namespace: dxl_manager
+            		serial_ports:
+                		tilt_port:
+                    			port_name: "/dev/tilt"
+                    			baud_rate: 57142
+                    	min_motor_id: 1
+                    	max_motor_id: 25
+                    	update_rate: 20
+        	</rosparam>
+ 	</node>
+ 
+      <!-- Start tilt joint controller -->
+      <rosparam file="$(find fsr_husky_driver)/settings/tilt.yaml" command="load"/>
+    
+	<node name="tilt_controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
+       		args="--manager=dxl_manager --port tilt_port tilt_controller"
+       		output="screen">
+ 	</node>
+
+	<node name="sick_tim551_2050001" pkg="sick_tim" type="sick_tim551_2050001" respawn="false" output="screen">
+		<param name="min_ang" type="double" value="-1.5707963" />
+	  	<param name="max_ang" type="double" value="1.5707963" />
+	  	<!-- Enables TCP instead of USB connection; `hostname` is the host name or IP address of the laser scanner -->
+	    	<param name="hostname" type="string" value="192.168.4.56" />
+	    	<param name="frame_id" type="str" value="tim_55x" />   
+	</node>
+
+    	<!-- Mine Detection Arm -->
+    	<node type="fsr_husky_arm_node" pkg="fsr_husky_driver" name="fsr_husky_arm" output="screen">
+		<remap from="joint_states" to="/arm_controller/joint_states"/>
+ 		<param name="linear_actuator_port" type="string" value="/dev/serial/by-id/usb-Pololu_Corporation_Pololu_Jrk_21v3_Motor_Controller_00076028-if00" />
+ 		<param name="rotation_actuator_port" type="string" value="/dev/serial/by-id/usb-Pololu_Corporation_Pololu_Jrk_21v3_Motor_Controller_00076028-if02" />
+   		<param name="joint_state_rate" value="50.0" />
+  	</node>
+
+ 	<!-- Metal Detector -->
+    	<node type="vallon_vmp3_node" pkg="vallon_vmp3_driver" name="metal_detector" output="screen">
+      		<param name="port" type="string" value="/dev/metal_detector" />
+    	</node>
+ 
+ 	<!-- FSR Husky URDF -->
+ 	<param name="robot_description" command="$(find xacro)/xacro.py '$(find hratc2015_dataset)/urdf/husky.urdf.xacro'" />
+ 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+   		<param name="publish_frequency" value="100.0" />
+ 	</node>
+ 	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+   		<param name="rate" value="100.0" />
+   		<rosparam param="source_list">["/arm_controller/joint_states","/tilt_controller/joint_states"]</rosparam>
+ 	</node>
+ 
+ 	<node pkg="joy" type="joy_node" name="joystick"/>
+ 
+ 	<node pkg="fsr_husky_teleop" type="joystick_teleop_node" name="full_teleop" output="screen">
+   		<param name="multiplex" value="true"/>
+   		<param name="control_pan_and_tilt" value="false"/>
+   		<!-- Without sweep speed control -->
+   		<param name="scale_angular" value="1.5" unless="$(arg use_arm)" />
+   		<param name="scale_linear" value="0.9" unless="$(arg use_arm)" />
+   		<!-- With sweep speed control -->
+   		<param name="scale_angular" value="1.0" if="$(arg use_arm)" />
+   		<param name="scale_linear" value="0.25" if="$(arg use_arm)" />
+ 	</node>
+
+</launch>
+ 
