@@ -1,0 +1,7 @@
+<launch>
+
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find hratc2015_dataset)/urdf/husky.urdf.xacro'" />
+    
+    <node pkg="rosbag" type="play" name="player" output="screen" args="--clock /home/coolfarm/coolfarm_workspace/src/hratc2015_dataset/bagfiles/test_2015-01-27-16-41-04.bag"/>
+
+</launch>
